@@ -1,0 +1,42 @@
+- content_for :head do
+	= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js'
+	= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.min.js'
+- content_for :banner do
+	%figure#banner
+		%svg#map.loading{preserveAspectRatio: 'xMinYMin slice', viewBox: "0 0 960 550"}
+			%circle.loader{:cx => 500, :cy => 180, :r => 50, 'stroke-width' => 20, 'stroke-dasharray' => 325}
+		#tooltip
+
+= javascript_include_tag javascript_path('map.js')
+
+= row do
+	=columns do
+		%hr
+= row do
+	=columns(medium: 12) do
+		%ul#organizations
+			- @organizations.sort.to_h.each do | country, values |
+				%li
+					%h2.country=country
+					- if values.is_a?(Hash)
+						%ul.territories
+							- values.sort.to_h.each do | territory, cities |
+								%li
+									%h3.territory=territory
+									%ul.cities
+										- cities.sort.to_h.each do | city, organizations |
+											%li
+												- city_data = @data[country][territory][city]
+												%h4.city{id: city_data[:id], data: {a: city_data[:lat], o: city_data[:lon], s: organizations.size}}=city
+												- organizations.each do | organization |
+													.organization
+														%h5=link_to organization.name, view_organization_path(slug: organization.slug)
+					- else
+						%ul.cities
+							- values.sort.to_h.each do | territory, cities |
+								%li
+									- city_data = @data[country][city]
+									%h3.city{id: city_data[:id], data: {a: city_data[:lat], o: city_data[:lon]}, s: organizations.size}=city
+									- organizations.sort.each do | organization |
+										.organization
+											%h4=link_to organization.name, view_organization_path(slug: organization.slug)

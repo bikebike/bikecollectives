@@ -1,0 +1,19 @@
+- content_for :banner do
+	%figure#banner.organization{style: "background-image: url(#{@organization.cover.full.url})"}
+		= image_tag(@organization.avatar.url)
+
+= row do
+	=columns(medium: 12) do
+		.flex-row
+			.flex-col
+				%h2.page-title=@organization.name
+			.flex-col
+				.org-location
+					%h3=[@location.city, I18n.t("geography.subregions.#{@location.country}.#{@location.territory}"), I18n.t("geography.countries.#{@location.country}")].join(', ')
+					=@location.street
+= row do
+	=columns do
+		%hr
+= row do
+	=columns(medium: 10, push: 2) do
+		= @organization.info.html_safe

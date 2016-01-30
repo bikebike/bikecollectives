@@ -1,0 +1,256 @@
+@import "bumbleberry";
+@import "settings";
+
+$zindex-base: 0;
+
+html, body {
+	color: #333;
+	background-color: #F7F4EA;
+	position: relative;
+	z-index: $zindex-base;
+	@include _(font-kerning, normal);
+}
+
+h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5, label, button, .button, dt, th, nav.sub-menu {
+	@include font-family(secondary);
+	font-weight: normal;
+	letter-spacing: -0.02em;
+
+	a {
+		color: inherit;
+		text-decoration: none;
+		$size: 0.075em;
+		text-shadow: 0 0 #333, $size 0 0 $white, 0 0, -$size 0 0 $white, $size $size 0 $white, -$size $size 0 $white;
+	    @include _(box-shadow, inset 0 -0.35em 0em -0.2em rgba(#333, 0.333));
+	    @include _(transition, all 150ms ease-in-out);
+
+	    &:hover {
+	    	@include _(box-shadow, inset 0 -0.35em 0em -0.1em rgba(#333, 0.667));
+	    }
+	}
+}
+
+h2, .h2 {
+	margin: 2em 0 0;
+	font-size: 2em;
+
+	&.page-title {
+		margin: 0;
+	}
+}
+
+h3, .h3 {
+	font-size: 1.25em;
+}
+
+.org-location {
+	text-align: right;
+	white-space: nowrap;
+
+    h3 {
+    	margin: 0;
+    }
+}
+
+.flex-row {
+	@include _-(display, flex);
+    @include _(justify-content, space-around);
+    @include _(flex-wrap, wrap);
+
+	.flex-col {
+		@include _(flex, 0);
+		@include _(align-self, flex-end);
+
+		&:first-child {
+			@include _(flex-grow, 1);
+		}
+	}
+}
+
+#title {
+	font-size: 3.5em;
+	line-height: 0.85em;
+	margin: 1em 0.025em 0;
+	text-align: right;
+}
+
+@include keyframes(rotate-loader) {
+	100% {stroke-dashoffset: 650;}
+}
+
+@include keyframes(rotate) {
+	100% {@include _(transform, rotate(360deg));}
+}
+
+#banner {
+	position: relative;;
+	background-size: cover;
+	background-position: 50% 25%;
+	border-top: 0.5em solid;
+	height: 32em;
+	margin: 0 0 5em;
+
+	figcaption {
+		position: absolute;
+		left: 0;
+		right: 33.33%;
+		bottom: -2.5em;
+		font-size: 1.6em;
+		line-height: 1.33em;
+		background-color: $white;
+		margin-top: -4em;
+		padding: 0.75em 1em;
+		font-style: italic;
+	}
+
+	img {
+		position: absolute;
+		bottom: -3em;
+		left: 3em;
+		max-width: 32em;
+		max-height: 32em;
+		background-color: #FFF;
+		@include _(box-shadow, 0 0 6em -1.5em #000);
+	}
+
+	&.organization {
+	    background-color: #5F634F;
+	    @include _(background-blend-mode, overlay);
+	    @include _(background-blend-mode, soft-light);
+	}
+}
+
+#nav {
+	margin-top: 2em;
+
+	a {
+		display: inline-block;
+		color: inherit;
+		text-decoration: none;
+		font-size: 1.5em;
+		margin: 0 1.5em 0 0;
+		@include font-family(secondary);
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+#content {
+	font-size: 1.4em;
+
+	img {
+		margin: 0 1em 1em -10%;
+		float: left;
+	}
+}
+
+hr {
+	margin: 1em;
+	opacity: 0.5;
+}
+
+#map {
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	background-color: #9BC4CB;
+
+	.city {
+		fill: #E36397;
+		cursor: pointer;
+		stroke: rgba(#E36397, 0.5);
+		@include _(transition, all 150ms ease-in-out);
+
+		&:hover {
+			fill: #333;
+			stroke: rgba(#333, 0.5);
+		}
+	}
+
+	.country {
+		fill: #5F634F;
+		stroke: $white;
+		stroke-width: .1px;
+		stroke-linejoin: round;
+
+		&:hover {
+			fill: rgba(#533E2D, 0.75);
+		}
+	}
+
+	.loader {
+		opacity: 0;
+		pointer-events: none;
+		stroke: #333;
+		fill: transparent;
+		stroke-dashoffset: 0;
+		@include _(animation, unquote('1.5s ease-in infinite rotate-loader, 2.5s linear infinite rotate'));
+		@include _(transform-origin, center);
+		@include _(transition, opacity 500ms ease-out);
+	}
+
+	&.loading .loader {
+		opacity: 1;
+	}
+}
+
+//242331
+//533E2D
+//A27035
+
+#organizations {
+	list-style: none;
+
+	> li {
+		width: 50%;
+		float: left;
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+	}
+
+	.organization {
+		margin-left: 1em;
+	}
+
+	.city {
+		display: inline-block;
+		margin: 0;
+		padding: 0 0.333em 0.125em;
+		
+		&:target {
+			background-color: #333;
+			color: $white;
+		}
+	}
+}
+
+#tooltip {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 0;
+    background-color: $white;
+    overflow: hidden;
+	@include _(transition, height 150ms ease-in-out);
+
+	&.open {
+		height: 3em;
+	}
+
+    .h3 {
+    	padding: 0.5em;
+    }
+}
+
+#page_footer {
+	background-color: #333;
+	color: $white;
+	margin-top: 10em;
+	min-height: 15em;
+}

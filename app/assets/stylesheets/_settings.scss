@@ -1,0 +1,36 @@
+$sidebar-width: rems(19);
+
+$colour-1: #FAF5F0; // white
+$colour-2: #333; // black
+$colour-3: #5F634F; // green
+$colour-4: #9BC4CB; // blue
+$colour-5: #E36397; // pink
+
+$white: $colour-1;
+$black: $colour-2;
+$green: $colour-3;
+$blue:  $colour-4;
+$pink:  $colour-5;
+
+@mixin default-box-shadow($direction: top, $distance: 1, $inset: false, $additional-shadow: false) {
+	@if capable_of(box-shadow) {
+		$offset: 0.2em;
+		@if $direction == right or $direction == bottom {
+			$offset: -$offset;
+		}
+		@if $direction == left or $direction == right {
+			$offset: '#{$offset} 0';
+		} @else {
+			$offset: '0 #{$offset}';
+		}
+		@if $inset {
+			$offset: 'inset #{$offset}';
+		}
+		@if $additional-shadow {
+			$additional-shadow: ', #{$additional-shadow}';
+		} @else {
+			$additional-shadow: '';
+		}
+		@include _(box-shadow, #{$offset} 0.8em #{-0.2em * $distance} #000#{$additional-shadow});
+	}
+}
