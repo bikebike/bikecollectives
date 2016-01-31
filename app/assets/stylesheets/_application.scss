@@ -34,7 +34,7 @@ h2, .h2 {
 	margin: 2em 0 0;
 	font-size: 2em;
 
-	&.page-title {
+	&.page-title, &.country {
 		margin: 0;
 	}
 }
@@ -69,7 +69,7 @@ h3, .h3 {
 
 #title {
 	font-size: 3.5em;
-	line-height: 0.85em;
+	line-height: 0.84em;
 	margin: 1em 0.025em 0;
 	text-align: right;
 }
@@ -207,6 +207,7 @@ hr {
 	> li {
 		width: 50%;
 		float: left;
+		margin-bottom: 2em;
 	}
 
 	ul {

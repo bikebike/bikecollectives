@@ -63,11 +63,8 @@ end
 
 group :test do
 	gem 'gherkin3', '>= 3.1.0'
-	gem 'cucumber', :git => "git://github.com/cucumber/cucumber-ruby.git", branch: "integrate-gherkin3-parser"
-	gem 'cucumber-core', :git => "git://github.com/cucumber/cucumber-ruby-core.git", branch: "integrate-gherkin3-parser"
-	gem 'cucumber-rails', :git => "git://github.com/cucumber/cucumber-rails.git", require: false
-
-	#gem 'capybara'
+	gem 'cucumber', '>= 2.1.0'
+ 	gem 'cucumber-rails'
     gem 'poltergeist'
 	gem 'guard-rspec'
 	gem 'factory_girl_rails'
@@ -76,7 +73,6 @@ group :test do
 	gem 'selenium-webdriver'
 	gem 'simplecov', require: false
 	gem 'webmock', require: false
-	#gem 'cucumber-rails', :require => false
 	gem 'database_cleaner'
 	gem 'mocha'
 end

@@ -18,10 +18,10 @@
 /*.rsa
 /*.pub
 
+/config/email.yml
+/config/database.yml
 /public/assets/*
 /public/uploads/*
-/public/config/database.yml
-/public/config/email.yml
 /app/assets/stylesheets/application/*
 /app/assets/stylesheets/email-example/*
 /app/assets/stylesheets/translations/*

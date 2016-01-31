@@ -19,10 +19,34 @@ Things you may want to cover:
 
 * Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+== Deployment instructions
 
-* ...
+=== Install gems
 
+    bundle install
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Becuase we use unicorn as a production server and it is not compatible with windows, if you are on a windows system you will need to run:
+
+    bundle install --without production preview
+
+=== Set up your database
+
+If you already have the BikeBike site set up, you can simply copy your database file from it's config directory. The two sites are meant to share the same database.
+
+=== Set up bikecollectives_common
+
+Since Bike!Bike! and Bikecollectives use a lot of the same code, much of it was extracted to a gem: https://github.com/bikebike/bikecollectives_common
+
+It is reccomended that you close this package into a directory names bikecollectives_common beside your bikecollectives directory. This will enable you to modify the package locally and make changes in real time.
+
+=== Set up bumbleberry
+
+Bumbleberry is a gem that was created by Godwin for ensuring compatiblity between browsers. You may wish to clone the repository to better allow you to debug or help contribute. The repository is at: https://github.com/bumbleberry/bumbleberry and you should clone it into a directory named bumbleberry that sits beside your bikecollectives directory.
+
+Once your bundle is intalled, you will need to compile your CSS files by running:
+
+    bundle exec rake bumbleberry:update
+
+This command will pull fresh data from caniuse.com and compile new CSS files accordingly.
+
+If you skip this step, your server is likely to run but won't be able to use any CSS files.

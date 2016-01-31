@@ -3,13 +3,15 @@
 	= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.min.js'
 - content_for :banner do
 	%figure#banner
-		%svg#map.loading{preserveAspectRatio: 'xMinYMin slice', viewBox: "0 0 960 550"}
+		%svg#map.loading{preserveAspectRatio: 'xMinYMin slice', viewBox: "0 0 940 550"}
 			%circle.loader{:cx => 500, :cy => 180, :r => 50, 'stroke-width' => 20, 'stroke-dasharray' => 325}
 		#tooltip
 
 = javascript_include_tag javascript_path('map.js')
 
 = row do
+	=columns do
+		%h2.page-title=_'page_titles.Organizations'
 	=columns do
 		%hr
 = row do
