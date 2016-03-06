@@ -2,7 +2,9 @@
 %html{ lang: I18n.locale.to_s }
 	%head
 		%meta{ charset: 'utf-8' }
-		%meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0' }
+		-#%meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0' }
+		%meta{ 'http-equiv' => 'x-ua-compatible', 'content' => 'ie=edge' }
+		%meta{ name: 'viewport', content: 'width=device-width, initial-scale=1' }
 		%title= (yield :title) + (content_for?(:title) ? (_!' | ') : '') + (_!'Bike Collective Network')
 		%meta{ name: 'description', content: (yield_or_default :description, I18n.t('page_descriptions.home')) }
 		= csrf_meta_tags
@@ -16,22 +18,101 @@
 		%link{ href: asset_path('apple-touch-icon-114x114.png'), rel: 'apple-touch-icon', sizes: '114x114' }
 		%link{ href: asset_path('apple-touch-icon-144x144.png'), rel: 'apple-touch-icon', sizes: '144x144' }
 		= yield :head
+		- if @banner_img
+			:scss
+				figure#banner {
+					background-image: url(#{image_path(@banner_img)});
+					background-image: url(#{image_path(@banner_img)}),
+						radial-gradient(ellipse at 50% 0%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 50%, #000 100%);
+				}
 
 	%body
 		= row do
-			= columns(medium: 12) do
-				%nav#nav
-					%a{href: '#'}=_'page_titles.About'
-					=link_to organizations_path do
-						=_'page_titles.Organizations'
-					%a{href: '#'}=_'page_titles.Wiki'
-					%a{href: '#'}=_'page_titles.ThinkTank'
+			= columns(medium: 12, id: :nav, tag: :nav) do
+				=link_to home_path do
+					=_'page_titles.About'
+				=link_to organizations_path do
+					=_'page_titles.Organizations'
+				=link_to wiki_path do
+					=_'page_titles.Wiki'
+				=link_to thinktank_home_path do
+					=_'page_titles.ThinkTank'
 		= row do
 			= columns(medium: 12) do
 				%h1#title=_'page_titles.home.Bike_Collective_Network'
 				= yield :banner
-		#content
+		%main#content
 			= yield
-		%footer#page_footer
+		#signin-dlg.popup-dlg
+			.dlg-inner
+				%h3='Sign In...'
+				= form_tag do_confirm_path do
+					.flex-field
+						= email_field_tag :email
+						%button.tertiary='Sign in by email'
+					.actions
+						= link_to 'Facebook Sign In', auth_at_provider_path(:provider => :facebook), class: :button
+						%button.cancel='Cancel'
+		= render_dlgs
+		= yield :footer
+		%footer#page-footer
 			= row do
-				= columns(medium: 12)
+				= columns({medium: 2}, id: :logo) do
+					= svg :logo, 'Bike Collectives Logo'
+				= columns(medium: 10, large: 8, end: true, id: 'foot-nav') do
+					%nav
+						- if logged_in?
+							= link_to my_account_path do
+								- name = current_user.firstname || current_user.username
+								= (name ? "#{name}'s" : 'Your') + ' Account'
+						- else
+							= link_to sign_in_path, data: {dlg: 'signin-dlg'} do
+								Sign In
+						=# link_to opportunities_path do
+						-#	= 'Opportunities'
+						= link_to site_info_path do
+							= 'Site Info'
+						= link_to organizations_path do
+							= 'Organizations'
+						= link_to thinktank_home_path do
+							= 'Wiki'
+						= link_to thinktank_home_path do
+							= 'The ThinkTank'
+					.copyright="&copy; #{DateTime.now.year} Bike Collective Network".html_safe
+					:javascript
+						Array.prototype.forEach.call(document.querySelectorAll('[data-dlg]'), function(element) {
+							var dlg = document.getElementById(element.dataset.dlg);
+							var editControl = dlg.querySelector('input[type="text"], input[type="email"], textarea');
+							element.onclick = function(event) {
+								event.preventDefault();
+								dlg.className = dlg.className.replace(/(\s+open)?(\s|$)/g, ' open$1');
+								Array.prototype.forEach.call(dlg.querySelectorAll('button, a.button'), function(element) {
+									element.addEventListener('click', function(event) {
+										if (element.className.match(/(^|\s)cancel(\s|$)/)) {
+											closeDlg(event);
+										} else {
+											dlg.className += ' posting';
+										}
+									});
+								});
+
+								if (editControl) {
+									setTimeout(function() {
+										var x = window.scrollX, y = window.scrollY;
+										editControl.focus();
+										if (editControl.type !== 'email') {
+											editControl.setSelectionRange(0, editControl.value.length);
+										}
+										window.scrollTo(x, y);
+									}, 100);
+								}
+
+								function closeDlg(event) {
+									dlg.className = dlg.className.replace(/\s+open(\s|$)/g, '$1');
+									
+									if (event) {
+										event.preventDefault();
+									}
+								}
+							};
+						});

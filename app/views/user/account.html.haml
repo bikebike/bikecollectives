@@ -1,0 +1,23 @@
+- #@banner_img = @organization.cover.full.url unless @is_new
+- content_for :banner do
+	#banner
+= row do
+	=columns(medium: 12) do
+		%h2.page-title='Your Account'
+= row do
+	=columns do
+		%hr
+= row do
+	=columns(medium: 3, large: 2, class: 'left-sidebar') do
+		= link_to sign_out_path, class: [:button, :delete] do
+			Sign out
+	=columns(medium: 9, large: 10) do
+		.field-display
+			%h3='Email:'
+			.static-value=@user.email
+		.field-display
+			%h3='Name:'
+			= popup_dlg :change_name, username_html(@user), 'User Name', class: 'editable-text', id: 'user-name' do
+				= form_tag update_my_account_path, data: {'ajax-update' => 'user-name'} do
+					= text_field_tag :name, @user.firstname || @user.username
+					= popup_dlg_actions ok: {type: 'button', class: 'save button', content: 'Save'}

@@ -1,5 +1,7 @@
 source 'http://rubygems.org'
 
+gem 'rails', '4.2.0'
+
 if Dir.exists?('../lingua_franca')
 	gem 'lingua_franca', :path => '../lingua_franca'
 else
@@ -20,6 +22,10 @@ end
 
 gem 'sass-json-vars'
 gem 'activerecord-session_store'
+
+gem 'uglifier', '>= 1.3.0'
+gem 'sorcery', '>= 0.8.1'
+gem 'oauth2', '~> 0.8.0'
 
 # gem 'rails', '4.2.0'
 # gem 'pg'

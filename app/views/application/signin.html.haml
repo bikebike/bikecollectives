@@ -1,0 +1,6 @@
+- content_for :banner do
+	= form_tag '/', id: :banner do
+		= email_field_tag :email
+		%button='Sign in by email'
+		or
+		= link_to 'Sign in with Facebook', auth_at_provider_path(:provider => :facebook), class: :button

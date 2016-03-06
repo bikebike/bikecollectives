@@ -1,0 +1,7 @@
+=_'email.organization.admin_request.content', "#{@requester.firstname || @requester.email} has requested to help administrate #{@organization.name}", vars: {user_or_email: @requester.firstname || @requester.email, organization: @organization}
+
+- if @message
+	="\"#{@message}\""
+
+=_'email.organization.admin_request.respond_link', "Respond to the request"
+=File.join(@host, view_organization_path(@organization.slug))

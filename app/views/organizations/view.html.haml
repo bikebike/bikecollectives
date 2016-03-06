@@ -1,19 +1,145 @@
+- @banner_img = @organization.cover.full.url unless @is_new
+- if @can_edit
+	- content_for :head do
+		= javascript_include_tag 'pen.js'
+		= javascript_include_tag 'markdown.js'
+	- content_for :footer do
+		#organization-title-editor.edit-dlg
+			.dlg-inner
+				%h3='Edit Organization Name'
+				= form_for @organization, url: @validate_path do |f|
+					.error-text
+					= f.text_field(:name, class: 'edit-control', autocomplete: :off)
+					.actions
+						%button.save='Save'
+						%button.cancel='Cancel'
+		#organization-location-editor.edit-dlg
+			.dlg-inner
+				%h3='Edit Organization Location'
+				= form_for @organization, url: @validate_path do |f|
+					.error-text
+					= f.text_area(:location, value: @editable_address, class: 'edit-control address-editor')
+					.actions
+						%button.save='Save'
+						%button.cancel='Cancel'
+		#organization-email-editor.edit-dlg
+			.dlg-inner
+				%h3='Edit Organization Location'
+				= form_for @organization, url: @validate_path do |f|
+					.error-text
+					= f.email_field(:email_address, value: @organization.email_address, class: 'edit-control email-editor')
+					.actions
+						%button.save='Save'
+						%button.cancel='Cancel'
+
+		= javascript_include_tag 'editor.js'
 - content_for :banner do
-	%figure#banner.organization{style: "background-image: url(#{@organization.cover.full.url})"}
-		= image_tag(@organization.avatar.url)
+	%figure#banner.organization{class: [:organization, @is_new || @organization.avatar.url.present? ? 'has-logo' : nil, @is_new || @banner_img.present? ? 'has-cover' : nil ]}
+		- if @can_edit
+			%label.logo.image-upload{for: 'logo-img', class: @is_new ? :template : nil, tabindex: 0}
+				- if @is_new
+					%img
+					.tip='Your Logo'
+				- else
+					= image_tag(@organization.avatar.url)
+				= form_for @organization, url: @validate_path, html: { multipart: true } do |f|
+					= f.file_field :avatar, id: 'logo-img'
+					= f.hidden_field :avatar_cache
+			%label.banner-upload.image-upload{for: 'banner-img', class: @is_new ? :template : nil, tabindex: 0}
+				= form_for @organization, url: @validate_path, html: { multipart: true } do |f|
+					= f.file_field :cover, id: 'banner-img'
+					= f.hidden_field :cover_cache
+				- if @is_new
+					.tip='Banner Image'
+		- else
+			.logo=image_tag(@organization.avatar.url)
 
 = row do
 	=columns(medium: 12) do
 		.flex-row
 			.flex-col
-				%h2.page-title=@organization.name
+				- if @can_edit
+					- if @is_new
+						%h2.page-title
+							%span.editable-text.template{tabindex: 0, data: {dlg: 'organization-title-editor'}}
+								Organization Name
+					- else
+						%h2.page-title
+							%span.editable-text{tabindex: 0, data: {dlg: 'organization-title-editor'}}
+								= @organization.name
+				- else
+					%h2.page-title= @organization.name
 			.flex-col
-				.org-location
-					%h3=[@location.city, I18n.t("geography.subregions.#{@location.country}.#{@location.territory}"), I18n.t("geography.countries.#{@location.country}")].join(', ')
-					=@location.street
+				- if @can_edit
+					- if @is_new
+						.org-location.editable-text.template{tabindex: 0, data: {dlg: 'organization-location-editor'}}
+							= enter_location_html
+					- else
+						.org-location.editable-text{tabindex: 0, data: {dlg: 'organization-location-editor'}}
+							= location_html(@location)
+				- else
+					.org-location= location_html(@location)
 = row do
 	=columns do
 		%hr
-= row do
-	=columns(medium: 10, push: 2) do
-		= @organization.info.html_safe
+- if @can_edit
+	= form_for @organization, url: @update_path, html: { class: ['post-form', (@is_new ? 'editing' : nil)], id: @is_new ? 'create-actions' : 'edit-actions' } do |f|
+		= row(class: 'editable-content') do
+			=columns(large: 2) do
+				= f.select :status, options_for_select(@statuses, @organization.status || :open)
+				.editing-actions
+					%button#save-content.save='Save'
+					%button#cancel-edit-content.cancel='Cancel'
+					%p.tip='Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.'
+			=columns(large: 10) do
+				#editor.editable-text{class: ['org-info', @is_new ? 'new' : nil], tabindex: 0}
+					= @organization.info.html_safe unless @is_new
+	= row do
+		= columns(large: 10, push: {large: 2}) do
+			.field-display.org-email.editable-text{tabindex: 0, data: {dlg: 'organization-email-editor'}}=org_email_html(@organization.email_address)
+	= row do
+		= columns(large: 10, push: {large: 2}) do
+			.administrators
+				%h3='Administrators'
+				%ul
+					- @organization.administrators.each do |admin|
+						%li
+							=admin.firstname ? "#{admin.firstname} <#{admin.email}>" : admin.email
+							- if admin.id == current_user.id
+								= popup_dlg :leaveorg, 'Leave Organization', 'Are you sure?', class: 'button less-important' do
+									%p='Are you sure you want to leave?'
+									= popup_dlg_actions ok: {type: 'a', class: 'save button', href: leave_organization_url(@organization.id), content: 'Yes'}, cancel: 'No'
+			- requests = @organization.requests
+			- if requests.length > 0
+				.requests
+					%h3='Requests'
+					%ul
+						- requests.each do |request|
+							%li
+								= request.named_email
+								= popup_dlg "request_respond_#{request.id}", 'Respond to request', 'Respond to Administrator Request', class: 'button delete' do
+									%p="Would you like to approve or deny the request from #{request.firstname || request.email}?"
+									= popup_dlg_actions approve: {type: 'a', class: 'edit button', href: access_response_url(id: @organization.id, user_id: request.id, state: :approved), content: 'Approve'}, deny: {type: 'a', class: 'delete button', href: access_response_url(id: @organization.id, user_id: request.id, state: :denied), content: 'Deny'}
+			= popup_dlg :add_administrator, 'Add administrator', 'Add New Administrator', class: 'button edit' do
+				= form_tag add_administrator_path(id: @organization.id), method: :post do
+					%p='Enter the email of the user you would like to add'
+					= email_field_tag :email, nil, required: true, placeholder: 'user@email.com'
+					= popup_dlg_actions save: {type: 'button', class: 'save button', content: 'Save'}
+- else
+	= row do
+		=columns(medium: 10, push: 2) do
+			.org-info=@organization.info.html_safe
+	= row do
+		=columns(medium: 10, push: 2) do
+			- if @can_become_admin
+				- if @requires_approval
+					= popup_dlg :adminrequest, 'Administrate Organization', 'Administrator Request', class: 'button save' do
+						= form_tag request_access_path(id: @organization.id) do
+							= text_area :request, :message, placeholder: 'Enter an optional message here'
+							= popup_dlg_actions save: 'Submit your request'
+				- else
+					= link_to 'Administrate Organization', administrate_organization_path(id: @organization.id), class: [:button, :save]
+			- elsif @organization.requested?(current_user)
+				= popup_dlg :leaveorg, 'Delete Request', 'Are you sure?', class: 'button less-important' do
+					%p='Are you sure you want to delete your request?'
+					= popup_dlg_actions ok: {type: 'a', class: 'save button', href: leave_organization_url(@organization.id), content: 'Yes'}, cancel: 'No'

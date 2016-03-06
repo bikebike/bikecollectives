@@ -1,0 +1,6 @@
+%p=_'email.organization.admin_request_approved.content', "#{@requester.firstname || @requester.username || @requester.email}, your request to administrate #{@organization.name} has been approved", vars: {user_or_email: @requester.firstname || @requester.username || @requester.email}
+%p
+	%h3
+		%b
+			%a{href: File.join(@host, view_organization_path(@organization.slug))}
+				=_'email.organization.admin_request_approved.view_link', "View your organization"

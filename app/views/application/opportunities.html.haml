@@ -1,0 +1,16 @@
+- #@banner_img = @organization.cover.full.url unless @is_new
+- content_for :banner do
+	#banner
+= row do
+	=columns(medium: 12) do
+		%h2.page-title='Job and Volunteer Opportunities'
+= row do
+	=columns do
+		%hr
+= row do
+	=columns(medium: 10, push: {medium: 2}) do
+		%h3='Job Opportunities'
+		%p='Coming soon...'
+= row do
+	=columns(medium: 10, push: {medium: 2}) do
+		%h3='Volunteer Opportunities'

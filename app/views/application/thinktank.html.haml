@@ -1,0 +1,19 @@
+- content_for(:banner) do
+	- if @form.present?
+		= @form
+	- else
+		%form#banner{method: :post, action: '/thethinktank/subscribe'}
+			%input{type: :email, name: :email, value: logged_in? ? current_user.email : "", placeholder: 'Enter your email...'}
+			%input{type: :hidden, name: :pw, value: ""}
+			%input{type: :hidden, name: :digest, value: 0}
+			%button='Join the ThinkTank'
+
+= row do
+	=columns do
+		- if @actions
+			=@actions.html_safe
+		%h2.page-title=@title
+		%hr
+= row(id: :thinktank, class: @thinktank_page) do
+	=columns do
+		= @content

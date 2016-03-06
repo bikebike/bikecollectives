@@ -1,28 +1,39 @@
+- @banner_img = 'sb.jpg'
 - content_for(:banner) do
-	%figure#banner{style: "background-image: url(#{image_path('baltimore.jpg')})"}
+	%figure#banner.with-caption{title: photo_credit('edu@sbbike.org')}
 		%figcaption=_'articles.home.paragraphs.Intro', 'Bicycle collectives, cooperatives, or community bike shops are not for profit organizations aimed at providing a venue for people to learn about the bicycle and build community around promoting sustainable transportation.'
-
 = row do
 	=columns do
+		%h2.page-title='About'
 		%hr
 = row do
 	=columns(medium: 10, push: 2) do
-		%h2='About'
 		%p='The Bike Collective Network is a hub which anyone involved with not for profit bicycle projects can use to engage with each other, to share knowledge and experiences. Through various tools and gathering opportunities we learn from one another’s mistakes and triumphs, in the hope of growing the community of bicycle collectives and empowering its organizers.'
 		%blockquote='The mission of the Bike Collective Network is to improve and encourage communication between existing and future community bike shops. Collectively we can improve a bigger wheel as opposed to re-inventing smaller ones.'
 		%p='Since 2008, the <em>BCN</em> has acted as an archive of information and public forum. A free space for people to ask questions or share what they have learned and engage with a diverse group of people with the common experience of working in community bike projects.'.html_safe
+= row do
+	= columns(medium: 10, push: 2) do
+		%h3='The Bike Collectives Wiki'
 		%p='The Bike Collectives Wiki was created to help bike collectives collaborate and share ideas. Whether you are an advocate, mechanic, or just someone who likes to ride; anyone can freely edit the content of the site. A history of all changes ensures that nothing is lost.'
-		%a{href: "/wiki/"}='Visit the Wiki'
+		%p.center
+			%a.button.colour-3{href: "/wiki/"}='Visit the Wiki'
+= row do
+	= columns(medium: 10, push: 2) do
+		%h3='The ThinkTank'
 		%p='The ThinkTank is an electronic mailing list where anyone involved with the coordination of bicycle organizations can seek advice, share their wisdom, and make important announcements. Topics may range from how to disassemble rusty bikes to how to apply for non-profit status to conference and career postings.'
-		%a{href: "#think-tank-register"}='Join the ThinkTank'
+		%p.center
+			%a.button.colour-4{href: "#think-tank-register"}='Join the ThinkTank'
+			%a.button.less-important{href: "#think-tank-register"}='View the Archives'
 = row do
 	= columns(medium: 10, push: 2) do
-		%h2='Bike!Bike!'
+		%h3='Bike!Bike!'
 		%p='Bike!Bike! is an annual international conference organized by and for community bicycle projects. This conference is a space for participants from shops and related advocacy groups to converge in a different city each year over a 4 day period to have workshops and strengthen our social network. Workshops vary each year but tend to sit within the framework of structural organization, mechanics, social change, and anti-oppression strategies on the scale of the bike shop, the neighborhood, the city and other related networks.'
-		%img{src: 'http://www.bikecollectives.org/img/bikebike.jpg'}
+		%img{src: 'http://www.bikecollectives.org/img/bikebike.jpg', title: photo_credit('ryanguzy@gmail.com')}
 		%p='The annual conference Bike!Bike! is hosted in a different city each year; regional Bike!Bike!s can take place at any time, in any location.'
-= row do
-	= columns(medium: 10, push: 2) do
-		%h2='The Alliance for Biking & Walking'
-		%p='The Alliance for Biking & Walking is North America&#39;s coalition of local and state bicycle and pedestrian advocacy organizations. We create, strengthen and unite advocacy leaders who are transforming their communities into great places to bike and walk.'.html_safe
-		%p='The Alliance for Biking & Walking hosts the Bike Collectives Wiki. As an association of state and local biking and walking advocacy organizations, the Alliance also works to support community bike shops and projects because these initiatives are integral to expanding access to low-cost, healthy transportation throughout all communities.'
+		%p.center
+			%a.button.colour-5{href: "https://bikebike.org"}='Visit Bike!Bike!'
+/ = row do
+/ 	= columns(medium: 10, push: 2) do
+/ 		%h3='The Alliance for Biking & Walking'
+/ 		%p='The Alliance for Biking & Walking is North America&#39;s coalition of local and state bicycle and pedestrian advocacy organizations. We create, strengthen and unite advocacy leaders who are transforming their communities into great places to bike and walk.'.html_safe
+/ 		%p='The Alliance for Biking & Walking hosts the Bike Collectives Wiki. As an association of state and local biking and walking advocacy organizations, the Alliance also works to support community bike shops and projects because these initiatives are integral to expanding access to low-cost, healthy transportation throughout all communities.'

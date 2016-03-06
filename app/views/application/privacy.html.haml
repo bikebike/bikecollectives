@@ -1,0 +1,11 @@
+- #@banner_img = @organization.cover.full.url unless @is_new
+- content_for :banner do
+	#banner
+= row do
+	=columns(medium: 12) do
+		%h2.page-title='Privacy'
+= row do
+	=columns do
+		%hr
+= row do
+	=columns(medium: 10, push: {medium: 2})

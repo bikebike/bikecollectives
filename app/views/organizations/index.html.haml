@@ -11,6 +11,9 @@
 
 = row do
 	=columns do
+		- if @can_add_organization
+			= link_to create_organization_path, class: [:button, :save, :right] do
+				Add an Organization
 		%h2.page-title=_'page_titles.Organizations'
 	=columns do
 		%hr
@@ -18,13 +21,15 @@
 	=columns(medium: 12) do
 		%ul#organizations
 			- @organizations.sort.to_h.each do | country, values |
-				%li
-					%h2.country=country
+				= row tag: :li do
+					= columns(medium: 12, tag: :h2, class: 'country') do
+						= country
 					- if values.is_a?(Hash)
-						%ul.territories
+						= columns(medium: 9, push: {medium: 3}, tag: :ul, class: :territories) do
 							- values.sort.to_h.each do | territory, cities |
 								%li
-									%h3.territory=territory
+									- if territory.present?
+										%h3.territory=territory
 									%ul.cities
 										- cities.sort.to_h.each do | city, organizations |
 											%li
@@ -34,7 +39,7 @@
 													.organization
 														%h5=link_to organization.name, view_organization_path(slug: organization.slug)
 					- else
-						%ul.cities
+						= columns(medium: 9, push: {medium: 3}, tag: :ul, class: :cities) do
 							- values.sort.to_h.each do | territory, cities |
 								%li
 									- city_data = @data[country][city]

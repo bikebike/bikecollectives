@@ -17,6 +17,7 @@
 /tmp
 /*.rsa
 /*.pub
+/.sass-cache/
 
 /config/email.yml
 /config/database.yml

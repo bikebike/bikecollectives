@@ -1,0 +1,92 @@
+!!! Strict
+%html{:xmlns => "http://www.w3.org/1999/xhtml"}
+	%head
+		%meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+		%meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+		%title Your Message Subject or Title
+		:css
+			#outlook a {padding:0;}
+			body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;background-color: #FAF5F0;}
+			.ExternalClass {width:100%;}
+			.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
+			#backgroundTable {margin:0; padding:0; width:100% !important; line-height: 100% !important;font-family:Verdana,Trebuchet MS;min-height: 75vh;}
+			#main td {padding: 2em;}
+			img {outline:none; text-decoration:none; -ms-interpolation-mode: bicubic;}
+			a img {border:none;}
+			.image_fix {display:block;max-width:100%}
+			p { margin: 1em; color:#333 !important; font-size: 1.5em; line-height: 1.25em; }
+			h1, h2, h3, h4, h5, h6 {color:#333 !important;font-family:Century Gothic,Lucida Sans,Tahoma,Arial Black,Geneva}
+			h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {color: #9BC4CB !important;}
+			h1 a:active, h2 a:active,  h3 a:active, h4 a:active, h5 a:active, h6 a:active { color: #D89E59 !important; }
+			h1 a:visited, h2 a:visited,  h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited { color: #DD57EF !important; }
+			table td {border-collapse: collapse;}
+			table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }
+			#backgroundTable table { max-width:512px;min-width:280px;background-color: #FAF5F0;}
+			a {color: #9BC4CB;}
+			a:link { color: #9BC4CB; }
+			a:visited { color: #9BC4CB; }
+			a:hover { color: #02CA9E; }
+			@media only screen and (max-device-width: 480px) {
+			a[href^="tel"], a[href^="sms"] {
+						text-decoration: none;
+						color: #333;
+						pointer-events: none;
+						cursor: default;
+					}
+			.mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+						text-decoration: default;
+						color: #9BC4CB !important;
+						pointer-events: auto;
+						cursor: default;
+					}
+			}
+			h3 b {
+				padding: 10px 20px;
+				line-height: 50px;
+			}
+			h3 b a,
+			h3 b a:visited {
+				color: #FFF !important;
+				background-color: #E36397;
+				text-decoration: none !important;
+				border-radius: 2px;
+				padding: 10px 15px;
+				margin-left: 20px;
+				border-bottom: 3px solid #A74B70;
+			}
+			h3 b a:hover {
+				background-color: #A74B70;
+			}
+			@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+			a[href^="tel"], a[href^="sms"] {
+						text-decoration: none;
+						color: #9BC4CB;
+						pointer-events: none;
+						cursor: default;
+					}
+			.mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+						text-decoration: default;
+						color: #9BC4CB !important;
+						pointer-events: auto;
+						cursor: default;
+					}
+			}
+			blockquote { border-left: 3px solid #9BC4CB; margin-left: 1em; padding-left: 1em;line-height:1.333em}
+	%body
+		%table#backgroundTable{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+			%tr
+				%td
+					%table{:align => "center", :border => "0", :cellpadding => "0", :cellspacing => "0"}
+						- if @banner
+							%tr
+								%td{:valign => "top", :style => 'text-align: center', colspan: 2}
+									%img.image_fix{:src => @banner}
+						%tr
+							%td#main{:valign => "top", colspan: 2, style: 'padding: 28px;'}= yield
+						%tr
+							%td{colspan: 2, style: 'height: 16px'}='&nbsp;'.html_safe
+						%tr
+							%td{colspan: 2, style: 'width: 50%; text-align: center'}
+								%a{href: @host}="&copy; Bike Collective Network #{Date.today.year}".html_safe
+						%tr
+							%td{colspan: 2, style: 'height: 16px'}='&nbsp;'.html_safe

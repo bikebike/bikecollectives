@@ -1,0 +1,4 @@
+=_'email.organization.admin_request_approved.content', "#{@requester.firstname || @requester.email}, your request to administrate #{@organization.name} has been approved", vars: {user_or_email: @requester.firstname || @requester.email}
+
+=_'email.organization.admin_request_approved.view_link', "View your organization"
+= File.join(@host, view_organization_path(@organization.slug))

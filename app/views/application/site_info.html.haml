@@ -1,0 +1,70 @@
+- @banner_img = 'https://cbarreb.smugmug.com/DIYBikeShops/Bici-Centro/Present/2014/i-QqTCMsC/0/X3/IMG_8733-X3.jpg'
+- #@banner_img = 'https://cbarreb.smugmug.com/DIYBikeShops/Bici-Centro/SBCC/Bici-Centro-SBCC/i-JXw5CWx/0/X3/IMG_0366-X3.jpg'
+- content_for :banner do
+	%figure#banner.short
+= row do
+	=columns(medium: 12) do
+		%h2.page-title='Site Info'
+= row do
+	=columns do
+		%hr
+= row do
+	=columns(medium: 9, large: 10, push: {medium: 3, large: 2}) do
+		.field-display
+			%p='See a problem with the site or have a question?'
+			= popup_dlg :report_problem, 'Contact Us', 'Report a Problem', class: 'button delete' do
+				= form_tag report_problem_path do
+					= text_area :message, nil, required: true, placeholder: 'Enter a description of the issue'
+					= email_field_tag :email, nil, required: true, placeholder: 'your@email.com' unless logged_in?
+					= popup_dlg_actions ok: {type: 'button', class: 'save button', content: 'Send'}
+= row do
+	=columns(medium: 9, large: 10, push: {medium: 2, large: 3}) do
+		%h3='Privacy Policy'
+		%p
+			The information you share with bikecollectives.org and bikebike.org will be shared between both sites however non-public information will not be shared with any other third-party. We classify the information you share into three categories:
+		.field-display.left
+			%h4='Public: '
+			.value
+				%p
+					Public information is available to all visitors to the site whether or not they are logged in or not. This information includes:
+				%ul
+					%li
+						%h5='Your name'
+						%p='Your name may be shared if you volunteer, if you have not set a user name your name defaults to the your email address without the email domain. For example is your email address is leonard.nimoy@example.com, your user name will be shared as leonard.nimoy.'
+					%li
+						%h5='Your organization name, address, and bio'
+						%p='The basic details of your organization will be made available to the public'
+		.field-display.left
+			%h4='Protected: '
+			.value
+				%p='Protected information will only be available to a subset of registered users which includes:'
+				%ul
+					%li
+						%h5='Your email address'
+						%p='Your email address will be shared with any other users who are members of the same organization that you are a member of or are applying to be a member of.'
+					%li
+						%h5='Your organization\'s email address'
+						%p='Your organization\'s email address will only be visible to other members of the same organization. We may try to contact your organization from time to time using this email address.'
+		.field-display.left
+			%h4='Private:'
+			.value
+				%p='At this time we do not store any private information, we do not ask for or store passwords.'
+		%p='If you ever wish to revoke any information that you do not have access to destroy yourself or wish further clarification, please don\'t hesitate to contact us.'
+= row do
+	=columns(medium: 9, large: 10, push: {medium: 2, large: 3}) do
+		%h3='Credits'
+		.field-display.left
+			%h4='Developer and designer: '
+			.value
+				=user_link('goodgodwin@hotmail.com')
+				=link_to 'See the code on github', :github, target: :_blank, class: :button
+		.field-display.left
+			%h4='Photography:'
+			%ul.value
+				%li
+					%h5='Front page banner:'
+					.user=user_link('edu@sbbike.org')
+				%li
+					%h5='Bike!Bike! photo:'
+					.user=user_link('ryanguzy@gmail.com')
+

@@ -1,0 +1,4 @@
+=_'email.organization.add_administrator.content', "#{@admin.firstname || @admin.username || @admin.email}, you have been added as an administrator to #{@organization.name}", vars: {user_or_email: @admin.firstname || @admin.username || @admin.email}
+
+=_'email.organization.add_administrator.view_link', "View your organization"
+= File.join(@host, view_organization_path(@organization.slug))

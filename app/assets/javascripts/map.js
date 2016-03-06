@@ -3,7 +3,7 @@ function loadMap() {
   var path = d3.geo.path().projection(projection);
   var tooltip = document.getElementById('tooltip');
   var zoom = d3.behavior.zoom()
-      .scaleExtent([1, 10])
+      .scaleExtent([1, 20])
       .on("zoom", function() {
         container.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")").attr('data-scale', d3.event.scale);//.style('r', 7 / d3.event.scale);
         container.selectAll('circle').each(function(d,i) { setPinSize(this, d, false); });
