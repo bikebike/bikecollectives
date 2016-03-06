@@ -64,11 +64,13 @@ module ApplicationHelper
 	end
 
 	def user_org(user)
-		relation = UserOrganizationRelationship.
-			where(user_id: user.id, relationship: :administrator).
-			not(status: :hidden).
+		relation = Organization.joins(:user_organization_relationships).
+			where(
+				'user_organization_relationships.user_id' => user.id,
+				'user_organization_relationships.relationship' => :administrator).
+			where('COALESCE(status, \'open\') != \'hidden\'').
 			order(updated_at: :asc).first
-		return relation.present? ? Organization.find(relation.organization_id) : nil
+		return relation.present? ? relation : nil
 	end
 
 	def sanitize_html(html)
