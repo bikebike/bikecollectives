@@ -1,20 +1,13 @@
 rails_env = ENV['RAILS_ENV'] || 'production'
 
-dir = 'rails'
-
 # The rule of thumb is to use 1 worker per processor core available,
 # however since we'll be hosting many apps on this server,
 # we need to take a less aggressive approach
 worker_processes 2
 
 # We deploy with capistrano, so "current" links to root dir of current release
-directory = '/home/rails'
-port = 8080
-
-if ENV['RAILS_ENV'] == 'preview'
-	directory = '/home/preview'
-	port = 8081
-end
+directory = "/home/bikecollectives/#{ENV['RAILS_ENV']}"
+port = 8082 + (ENV['RAILS_ENV'] == 'preview' ? 1 : 0)
 
 working_directory directory
 
