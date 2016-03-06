@@ -21,7 +21,7 @@ working_directory directory
 # Listen on unix socket
 listen "127.0.0.1:#{port}", :backlog => 64
 
-pid "/home/unicorn/#{ENV['RAILS_ENV']}.pid"
+pid "/home/unicorn/bikecollectives/#{ENV['RAILS_ENV']}.pid"
 
 stderr_path "#{directory}/log/unicorn.log"
 stdout_path "#{directory}/log/unicorn.log"
