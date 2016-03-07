@@ -54,7 +54,9 @@ module ApplicationHelper
 	end
 
 	def user_name(user)
-		user.firstname || user.username || user.email.split('@').first
+		email = user.is_a?(User) ? user : email
+		name = user.is_a?(User) ? user.firstname || user.username : nil
+		return name || email.split('@').first
 	end
 
 	def photo_credit(email)
