@@ -54,7 +54,7 @@ module ApplicationHelper
 	end
 
 	def user_name(user)
-		email = user.is_a?(User) ? user : email
+		email = user.is_a?(User) ? user.email : user
 		name = user.is_a?(User) ? user.firstname || user.username : nil
 		return name || email.split('@').first
 	end
