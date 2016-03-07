@@ -66,6 +66,7 @@ module ApplicationHelper
 	end
 
 	def user_org(user)
+		return nil unless user.present?
 		relation = Organization.joins(:user_organization_relationships).
 			where(
 				'user_organization_relationships.user_id' => user.id,
