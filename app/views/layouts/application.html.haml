@@ -63,18 +63,15 @@
 					%nav
 						- if logged_in?
 							= link_to my_account_path do
-								- name = current_user.firstname || current_user.username
-								= (name ? "#{name}'s" : 'Your') + ' Account'
+								= "#{user_name current_user}'s Account"
 						- else
 							= link_to sign_in_path, data: {dlg: 'signin-dlg'} do
 								Sign In
-						=# link_to opportunities_path do
-						-#	= 'Opportunities'
 						= link_to site_info_path do
 							= 'Site Info'
 						= link_to organizations_path do
 							= 'Organizations'
-						= link_to thinktank_home_path do
+						= link_to wiki_path do
 							= 'Wiki'
 						= link_to thinktank_home_path do
 							= 'The ThinkTank'

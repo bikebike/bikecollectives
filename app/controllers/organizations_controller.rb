@@ -19,29 +19,26 @@ class OrganizationsController < ApplicationController
 					# if the latitde and logitude are missing try re-saving the object to update it
 					location.save! if location.latitude.blank? || location.longitude.blank?
 
-					if location.latitude.present? && location.longitude.present?
-						# only add the organization if the location is present
-						country_name = country_name(location)
-						@organizations[country_name] ||= Hash.new
-						@data[country_name] ||= Hash.new
+					country_name = country_name(location)
+					@organizations[country_name] ||= Hash.new
+					@data[country_name] ||= Hash.new
 
-						if location.territory.present?
-							territory_name = territory_name(location)
-							@organizations[country_name][territory_name] ||= Hash.new
-							@organizations[country_name][territory_name][location.city] ||= Array.new
-							@organizations[country_name][territory_name][location.city] << organization
+					if location.territory.present?
+						territory_name = territory_name(location)
+						@organizations[country_name][territory_name] ||= Hash.new
+						@organizations[country_name][territory_name][location.city] ||= Array.new
+						@organizations[country_name][territory_name][location.city] << organization
 
-							# if we are still missing the latitude and logitude, skip this organization
-							if location.latitude.present? && location.longitude.present?
-								@data[country_name][territory_name] ||= Hash.new
-								@data[country_name][territory_name][location.city] ||= {lat: location.latitude, lon: location.longitude, id: location.slugify}
-							end
-						else
-							@organizations[country_name][location.city] ||= Array.new
-							@organizations[country_name][location.city] << organization
-
-							@data[country_name][location.city] ||= {lat: location.latitude, lon: location.longitude, id: location.slugify} if location.latitude.present? && location.longitude.present?
+						# if we are still missing the latitude and logitude, skip this organization
+						if location.latitude.present? && location.longitude.present?
+							@data[country_name][territory_name] ||= Hash.new
+							@data[country_name][territory_name][location.city] ||= {lat: location.latitude, lon: location.longitude, id: location.slugify}
 						end
+					else
+						@organizations[country_name][location.city] ||= Array.new
+						@organizations[country_name][location.city] << organization
+
+						@data[country_name][location.city] ||= {lat: location.latitude, lon: location.longitude, id: location.slugify} if location.latitude.present? && location.longitude.present?
 					end
 				end
 			end
