@@ -54,15 +54,19 @@ module ApplicationHelper
 	end
 
 	def user_name(user)
-		email = user.is_a?(User) ? user.email : user
-		name = user.is_a?(User) ? user.firstname || user.username : nil
+		email = user
+		if user.is_a?(User)
+			email = user.email
+			name = user.firstname || user.username
+		end
 		return name || email.split('@').first
 	end
 
 	def photo_credit(email)
 		user = User.find_by_email(email)
 		org = user_org(user)
-		org.present? ? "Photo by #{user_name(user)} of #{org.name}" : "Photo by #{user_name(user)}"
+		name = user_name(user || email)
+		org.present? ? "Photo by #{name} of #{org.name}" : "Photo by #{name}"
 	end
 
 	def user_org(user)
