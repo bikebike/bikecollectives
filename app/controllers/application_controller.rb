@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'net/http'
 
-class ApplicationController < ApplicationControllerBase
+class ApplicationController < BaseController
 	protect_from_forgery with: :exception, :except => [:do_confirm, :thinktank]
 
 	def signout

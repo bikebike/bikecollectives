@@ -3,10 +3,8 @@
 
 = row do
 	= columns do
-		- if @template
+		- if @template.present?
 			=render @template
 		- else
-			%h2
-				=_'articles.permission_denied.headings.main','Sorry, you currently don\'t have access to this page'
-			%p
-				=_'articles.permission_denied.paragraphs.main', :p
+			%h2=_'articles.permission_denied.headings.main','Sorry, you currently don\'t have access to this page'
+			%p=_'articles.permission_denied.paragraphs.main', :p

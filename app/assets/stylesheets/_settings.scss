@@ -16,29 +16,6 @@ $edit-colour: $blue;
 $delete-colour: $pink;
 $error-colour: $pink;
 
-@mixin default-box-shadow($direction: top, $distance: 1, $inset: false, $additional-shadow: false) {
-	@if capable_of(box-shadow) {
-		$offset: 0.2em;
-		@if $direction == right or $direction == bottom {
-			$offset: -$offset;
-		}
-		@if $direction == left or $direction == right {
-			$offset: '#{$offset} 0';
-		} @else {
-			$offset: '0 #{$offset}';
-		}
-		@if $inset {
-			$offset: 'inset #{$offset}';
-		}
-		@if $additional-shadow {
-			$additional-shadow: ', #{$additional-shadow}';
-		} @else {
-			$additional-shadow: '';
-		}
-		@include _(box-shadow, #{$offset} 0.8em #{-0.2em * $distance} #000#{$additional-shadow});
-	}
-}
-
 @mixin default-text-shadow {
 	@include _(text-shadow, 0.05em 0.1em rgba(#000, 0.25));
 }

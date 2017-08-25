@@ -8,10 +8,15 @@ require 'openssl'
 
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development?
 
+ENV['bc_host'] = {
+  test:        'localhost:3000',
+  development: 'localhost.bikecollectives.org:3000',
+  preview:     'preview.bikecollectives.org',
+  production:  'bikecollectives.org',
+}[Rails.env]
+
 Rails.application.config.sorcery.submodules = [:external]
 #Rails.application.config.sorcery.submodules = [:remember_me, :reset_password, :brute_force_protection, :external]
-
-#puts " ======= IM HERE!!! ========= "
 
 # Here you can configure each submodule's features.
 Rails.application.config.sorcery.configure do |config|
@@ -120,7 +125,7 @@ Rails.application.config.sorcery.configure do |config|
   
   config.facebook.key = "1666547566967314"
   config.facebook.secret = "8f27d982271ab07ca33fead972f5f78c"
-  config.facebook.callback_url = "http://localhost.bikecollectives.org:3000/oauth/callback?provider=facebook"
+  config.facebook.callback_url = "#{ENV['bc_host']}/oauth/callback?provider=facebook"
   config.facebook.user_info_mapping = {:email => "email", :firstname => "name"}#, :avatar => "picture/data/url"}
   config.facebook.scope = "email"
   config.facebook.display = "popup"

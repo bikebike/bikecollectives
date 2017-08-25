@@ -1,102 +1,94 @@
 source 'http://rubygems.org'
 
 gem 'rails', '4.2.0'
+gem 'pg'
+gem 'rake', '11.1.2'
+gem 'ruby_dep', '1.3.1' # Lock at 1.3.1 since 1.4 requires ruby 2.5. We should unlock once we upgrade the ruby version on our server
 
-if Dir.exists?('../lingua_franca')
-	gem 'lingua_franca', :path => '../lingua_franca'
-else
-	gem 'lingua_franca', :git => 'git://github.com/lingua-franca/lingua_franca.git'
-end
+gem 'rack-mini-profiler'
 
-if Dir.exists?('../bikecollectives_common')
-	gem 'bikecollectives_common', :path => '../bikecollectives_common'
-else
-	gem 'bikecollectives_common', :git => 'git://github.com/BikeBike/bikecollectives_common.git'
-end
+gem 'haml'
+gem 'nokogiri'
 
-if Dir.exists?('../bumbleberry')
-	gem 'bumbleberry', :path => "../bumbleberry"
-else
-	gem 'bumbleberry', :git => 'git://github.com/bumbleberry/bumbleberry.git'
-end
-
-gem 'sass-json-vars'
-gem 'activerecord-session_store'
-
+gem 'sass'
+gem 'sass-rails'
 gem 'uglifier', '>= 1.3.0'
-gem 'sorcery', '>= 0.8.1'
-gem 'oauth2', '~> 0.8.0'
+# replace this once these changes are merged in sorcery
+gem 'sorcery', git: 'https://github.com/tg90nor/sorcery.git', branch: 'make-facebook-provider-use-json-token-parser'
+gem 'carrierwave'
+gem 'carrierwave-imageoptimizer'
+gem 'mini_magick'
+gem 'activerecord-session_store'
+gem 'premailer-rails'
+gem 'sidekiq'
+gem 'letter_opener'
+gem 'launchy'
 
-# gem 'rails', '4.2.0'
-# gem 'pg'
-# gem 'haml'
-# gem 'jquery-rails'
-# gem 'jquery-ui-rails'
-# gem 'coffee-rails', '~> 4.0.0'
+gem 'bikecollectives_core', git: 'https://github.com/bikebike/bikecollectives_core.git', branch: 'master'
+gem 'bumbleberry', git: 'https://github.com/bumbleberry/bumbleberry.git', branch: 'master'
+gem 'lingua_franca', git: 'https://github.com/lingua-franca/lingua_franca.git', branch: 'master'
+gem 'marmara', git: 'https://github.com/lingua-franca/marmara.git', branch: 'master'
 
-# gem 'tzinfo-data'
-# gem 'sass'
-# gem 'sass-rails'
-
-# gem 'uglifier', '>= 1.3.0'
-# gem 'sorcery', '>= 0.8.1'
-# gem 'oauth2', '~> 0.8.0'
-# gem 'carrierwave'
-# gem 'carrierwave-imageoptimizer'
-# gem 'mini_magick'
-# gem 'nested_form'
-# gem 'acts_as_list'
-# gem 'geocoder'
-# gem 'paper_trail', '~> 3.0.5'
-# gem 'sitemap_generator'
-# gem 'activerecord-session_store'
-# gem 'sass-json-vars'
-# gem 'delayed_job_active_record'
-# gem 'redcarpet'
-
-group :development, :test do
-	gem 'rspec'
-	gem 'rspec-rails'
-end
+gem 'geocoder'
+gem 'sitemap_generator'
+gem 'sass-json-vars'
+gem 'redcarpet'
+gem 'to_spreadsheet', git: 'https://github.com/glebm/to_spreadsheet.git'
 
 group :development do
-	gem 'better_errors'
-	gem 'binding_of_caller'
-	gem 'meta_request'
-	gem 'haml-rails'
-	gem 'awesome_print'
+  gem 'better_errors', '2.2.0'
+  gem 'binding_of_caller'
+  gem 'meta_request'
+  
+  gem 'capistrano', '~> 3.1'
+  gem 'capistrano-rails', '~> 1.1'
+  gem 'capistrano-faster-assets', '~> 1.0'
+
+  gem 'eventmachine', git: 'https://github.com/krzcho/eventmachine', :branch => 'master'
+  gem 'thin'
+  gem 'rubocop', require: false
+  gem 'haml-lint', require: false
 end
 
 group :test do
-	gem 'gherkin3', '>= 3.1.0'
-	gem 'cucumber', '>= 2.1.0'
- 	gem 'cucumber-rails'
-    gem 'poltergeist'
-	gem 'guard-rspec'
-	gem 'factory_girl_rails'
-	gem 'coveralls', require: false
-	gem 'launchy'
-	gem 'selenium-webdriver'
-	gem 'simplecov', require: false
-	gem 'webmock', require: false
-	gem 'database_cleaner'
-	gem 'mocha'
-end
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'gherkin3', '>= 3.1.0'
+  gem 'cucumber'
+  gem 'cucumber-core'
+  gem 'cucumber-rails', require: false
+  gem 'guard-cucumber'
 
-group :staging, :production, :preview do
-	gem 'rails_12factor'
-	gem 'capistrano'
-	gem 'rvm-capistrano'
+  gem 'poltergeist'
+  gem 'capybara-email'
+  gem 'guard-rspec'
+  gem 'factory_girl_rails'
+  gem 'coveralls', require: false
+  gem 'selenium-webdriver'
+  gem 'simplecov', require: false
+  gem 'webmock', require: false
+  gem 'database_cleaner'
+  gem 'mocha'
 end
 
 group :production, :preview do
-	gem 'unicorn'
-	gem 'daemon-spawn'
-	gem 'daemons'
+  gem 'rails_12factor'
+end
+
+group :production, :preview do
+  platforms :ruby do
+    gem 'unicorn', require: false
+  end
+
+  gem 'daemon-spawn'
+  gem 'daemons'
 end
 
 platforms 'mswin', 'mingw' do
-	group :test do
-		gem 'wdm', '>= 0.1.0'
-	end
+  gem 'tzinfo-data'
+  
+  group :test do
+    gem 'wdm', '>= 0.1.0'
+      gem 'win32console', require: false
+  end
 end

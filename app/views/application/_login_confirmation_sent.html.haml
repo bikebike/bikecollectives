@@ -1,3 +1,4 @@
-%h2
-	%h2=_'articles.permission_denied.headings.confirmation_sent','Confirmation Sent'
-	%p= _'articles.permission_denied.paragraphs.confirmation_sent', :p
+%article
+	= columns(medium: 12) do
+		%h2=_'articles.permission_denied.headings.confirmation_sent','Confirmation Sent'
+		%p= _'articles.permission_denied.paragraphs.confirmation_sent', :p
